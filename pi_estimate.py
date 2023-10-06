@@ -7,7 +7,7 @@ import doctest
 import points_plot
 
 GOOD_PI = 3.141592653589793  # A very good estimate, from math.pi
-SAMPLES = 1_000   # More =>  more precise, but slower
+SAMPLES = 1_00   # More =>  more precise, but slower
 
 def in_unit_circle(x: float, y: float) -> bool:
     """
@@ -84,15 +84,19 @@ def pi_approx() -> float:
         total_try = total_try + 1
         if in_unit_circle(f, g) == True:
             total_in_circle = total_in_circle + 1
+            points_plot.plot(f, g, color_rgb=(255, 10, 10)) ## Red
         else:
-            pass
+            points_plot.plot(f, g, color_rgb=(240, 240, 240)) ## Light grey
     return (total_in_circle / total_try) * 4
 
 
 def main():
     doctest.testmod()
-    #Eyeball test of scattering points
-    plot_random_points()
+    # plot_random_points() # Eyeball test
+    points_plot.init()
+    estimate = pi_approx()
+    print(f"Pi is approximately {estimate}")
+    points_plot.wait_to_close()
 
 if __name__ == "__main__":
     main()
