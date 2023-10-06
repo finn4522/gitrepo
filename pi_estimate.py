@@ -76,16 +76,17 @@ def pi_approx() -> float:
     >>> relative_error(pi_approx(), GOOD_PI) <= 0.01  # Within 1%
     True
     """
-    loops_num = 20
+   
     total_try = 0
     total_in_circle = 0
-    for i in range(loops_num):
+    for i in range(SAMPLES):
         (f, g) = rand_point_unit_sq()
         total_try = total_try + 1
         if in_unit_circle(f, g) == True:
             total_in_circle = total_in_circle + 1
         else:
             pass
+    return (total_in_circle / total_try) * 4
 
 
 def main():
