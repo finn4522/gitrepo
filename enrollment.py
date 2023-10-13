@@ -1,20 +1,25 @@
 """Enrollment analysis:  Summary report of majors enrolled in a class.
 CS 210 project, Fall 2022.
 Author:  Finn Fujimura
-Credits: The Python Standard Library CSV File Reading and Writing
+Credits: The Python Standard Library CSV File Reading and Writing, 
+Stack Overflow (https://stackoverflow.com/questions/72293741/create-dictionary-from-2-columns-of-dataframe)
+Chat GPT (Information given by Chat GPT has been understood and rewritten by hand.)
 """
 import doctest
 import csv
+
+
 def read_csv_column(path: str, field: str) -> list[str]:
     """Read one column from a CSV file with headers into a list of strings.
 
     >>> read_csv_column("data/test_roster.csv", "Major")
     ['DSCI', 'CIS', 'BADM', 'BIC', 'CIS', 'GSS']
     """
-    with open(path, 'r', newline='') as csvfile:
+    with open(path, "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         columnlist = [row[field] for row in reader]
     return columnlist
+
 
 def counts(column: list[str]) -> dict[str, int]:
     """Returns a dict with counts of elements in column.
@@ -29,7 +34,8 @@ def counts(column: list[str]) -> dict[str, int]:
         else:
             el_counts[f] = 1
     return el_counts
-        
+
+
 def read_csv_dict(path: str, key_field: str, value_field: str) -> dict[str, dict]:
     """Read a CSV with column headers into a dict with selected
     key and value fields.
@@ -38,7 +44,7 @@ def read_csv_dict(path: str, key_field: str, value_field: str) -> dict[str, dict
     {'ABAO': 'Applied Behavior Analysis', 'ACTG': 'Accounting', 'ADBR': 'Advertising and Brand Responsibility'}
     """
     table = {}
-    with open(path, 'r', newline='') as csvfile:
+    with open(path, "r", newline="") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             labelkey = row[key_field]
@@ -46,12 +52,16 @@ def read_csv_dict(path: str, key_field: str, value_field: str) -> dict[str, dict
             table[labelkey] = labelvalue
     return table
 
+
 def items_v_k(dict):
-    '''Extracts a list of (value, key) pairs from a dictionary
+    """Extracts a list of (value, key) pairs from a dictionary
     >>> items_v_k({1: 'Hi', 2: 'Hello', 3: 'Hey'})
     [('Hi', 1), ('Hello', 2), ('Hey', 3)]
-    '''
+    """
     return [(value, key) for key, value in dict.items()]
+
+
+# Doctest module
 def main():
     doctest.testmod()
     majors = read_csv_column("data/roster_selected.csv", "Major")
@@ -64,17 +74,6 @@ def main():
         program = program_names[code]
         print(count, program)
 
+
 if __name__ == "__main__":
     main()
-
-'''Read roster CSV file into a single list with major codes. 
-Count elements in list of major codes, keeping a summary in a dict 
-   that maps major code to count. 
-Sort the (major code, count) elements from the dict, giving a list 
-from largest count to smallest. 
-Read program CSV file into a dict that maps program codes (the same 
-as major codes) into program names. 
-For each (major code, count) pair,  
-    look up major code to get program name
-    print count and program name
-    '''
