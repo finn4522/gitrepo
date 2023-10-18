@@ -187,16 +187,20 @@ def main():
     centroids = cluster_centroids(partition)
     centroid_symbols = plot_points(fire_map, centroids, size_px=10, color="blue")
 
-    # Improved assignment
-    partition = assign_closest(points, centroids)
-    centroids = cluster_centroids(partition)
-    move_points(fire_map, centroids, centroid_symbols)
+    # Continue improving assignment until assignment doesn't change
+    for i in range(config.MAX_ITERATIONS):
+        old_partition = partition
+        partition = assign_closest(points, centroids)
+        if partition == old_partition:
+            # No change ... this is "convergence"
+            break
+        centroids = cluster_centroids(partition)
+        move_points(fire_map, centroids, centroid_symbols)
 
     # Show connections at end
     show_clusters(fire_map, centroid_symbols, partition)
 
     input("Press enter to quit")
-
 
 if __name__ == "__main__":
     main()
